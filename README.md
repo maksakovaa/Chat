@@ -75,7 +75,7 @@ void resize(int newSize) \
 **void regLoginChk(std::string &_login)** \
 //Функция. Проверка пароля при регистрации \
 **bool regPwdChk(std::string& _pwd)** \
-//Функция. Проверка пароля при авторизации
+//Функция. Проверка пароля при авторизации \
 **bool authPwdChk(std::string &_login, std::string &_pwd)** \
 //Завершение программы \
 **bool exit()**
