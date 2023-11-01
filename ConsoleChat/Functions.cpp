@@ -466,7 +466,7 @@ void menuPrivateSendMsg()
 	{
 		system("cls");
 		mainChat->showPersonal(Users->getUserName(userId), Users->getUserName(temp));
-		cout << "1 - Вернуться в главное меню, 2 - Выход из программы 3 - Отправить сообщение 4 - Вернуться к списку пользователей" << endl;
+		cout << "1 - Вернуться в главное меню, 2 - Выход из программы 3 - Просмотр сообщений 4 - Вернуться к списку пользователей" << endl;
 		cin >> choice;
 		while (choice != 1 && choice != 2 && choice != 3 && choice != 4)
 		{
