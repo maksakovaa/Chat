@@ -74,10 +74,11 @@ void resize(int newSize) \
 **void menuPrivateSendMsg()** \
 //Меню общего чата \
 **void menuMainChat()** \
-//Функция обработки некорректного ввода \
+//Функции обработки некорректного ввода \
+**void inputCleaner()** \
 **void incorrect()** \
 //Функция. Проверка логина при регистрации \
-**void regLoginChk(std::string &_login)** \
+**bool regLoginChk(std::string &_login)** \
 //Функция. Проверка пароля при регистрации \
 **bool regPwdChk(std::string& _pwd)** \
 //Функция. Проверка пароля при авторизации \

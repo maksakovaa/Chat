@@ -23,7 +23,7 @@ void menuChgPwd(); //Функция являющаяся подменю menuUserMgmt(), служит для смены
 void menuAuth(); //Меню авторизованного пользователя
 void menuPrivateSendMsg(); //Функция являющаяся подменю menuUserList(), служит для отправки личных сообщений
 void menuMainChat(); //Меню общего чата
-void inputCleaner();
+void inputCleaner(); //Функция обработки некорректного ввода
 void incorrect(); //Функция обработки некорректного ввода
 bool regLoginChk(std::string &_login); //Функция. Проверка логина при регистрации
 bool regPwdChk(std::string& _pwd); //Функция. Проверка пароля при регистрации
