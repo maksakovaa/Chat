@@ -47,17 +47,21 @@ void menuRegUser()
 {
 	string name, login, pwd;
 	system("cls");
-	cin.clear();
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout << "Введите своё имя:" << endl;
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	getline(cin, name);
 	cout << "Введите желаемый логин:" << endl;
 	getline(cin, login);
-	regLoginChk(login);
+	while (!regLoginChk(login))
+	{
+		cout << "Некорректный ввод, повторите:" << endl;
+		getline(cin, login);
+	}
 	cout << "Введите желаемый пароль:" << endl;
 	getline(cin, pwd);
 	while (!regPwdChk(pwd))
 	{
+		cout << "Некорректный ввод, повторите:" << endl;
 		getline(cin, pwd);
 	}
 	Users->addUsers(name, login, pwd);
@@ -82,6 +86,7 @@ void menuRegUser()
 			menu();
 			break;
 		}
+		break;
 	}
 	case 2:
 	{
@@ -99,8 +104,7 @@ void menuLogin()
 	system("cls");
 	cout << "Вход для зарегистрированных пользователей" << endl;
 	cout << "Введите логин:" << endl;
-	cin.clear();
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	inputCleaner();
 	getline(cin, login);
 	if (Users->loginCheck(login))
 	{
@@ -343,8 +347,7 @@ void menuChgPwd()
 		}
 		string pwd;
 		cout << "Введите новый пароль:" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		inputCleaner();
 		getline(cin, pwd);
 		while (!regPwdChk(pwd))
 		{
@@ -486,8 +489,7 @@ void menuPrivateSendMsg()
 		{
 			cout << "Введите сообщение:" << endl;
 			string msgText;
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			inputCleaner();
 			getline(cin, msgText);
 			mainChat->sendMsg(Users->getUserName(temp), Users->getUserName(userId), msgText);
 			break;
@@ -532,8 +534,7 @@ void menuMainChat()
 		{
 			cout << "Введите сообщение:" << endl;
 			string msgText;
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			inputCleaner();
 			getline(cin, msgText);
 			mainChat->sendMsg("ALL", Users->getUserName(userId), msgText);
 			break;
@@ -544,67 +545,66 @@ void menuMainChat()
 	}
 }
 
-void incorrect()
+void inputCleaner()
 {
 	cin.clear();
 	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void incorrect()
+{
+	inputCleaner();
 	cout << "Некорректный ввод, повторите:" << endl;
 }
 
-void regLoginChk(string &_login)
+bool regLoginChk(string &_login)
 {
 	string letters = "абвгдеёжщийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+	int errCount = 0;
 	if (_login.find_first_of(letters) != string::npos)
 	{
 		cout << "ERROR: Некорректный ввод. Используйте латинницу. " << endl;
+		errCount++;
 	}
+
 	if (_login.find_first_of(" ") != string::npos)
 	{
 		cout << "ERROR: Некорректный ввод. Не используйте пробел. " << endl;
+		errCount++;
 	}
+
 	if (Users->loginCheck(_login))
 	{
 		cout << "ERROR: Имя пользователя уже занято " << endl;
+		errCount++;
 	}
-	if (Users->loginCheck(_login) || _login.find_first_of(" ") != string::npos || _login.find_first_of(letters) != string::npos)
+
+	if (errCount == 0)
 	{
-		cout << "\n 1 - Повторить \n 2 - В главное меню" << endl;
-		cin >> choice;
-		while (choice != 1 && choice != 2)
-		{
-			incorrect();
-			cin >> choice;
-		}
-		switch (choice)
-		{
-		case 1:
-		{
-			menuRegUser();
-			break;
-		}
-		case 2:
-		{
-			menu();
-			break;
-		}
-		default:
-			break;
-		}
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
 bool regPwdChk(string& _pwd)
 {
+	int errCount = 0;
 	string letters = "абвгдеёжщийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
 	if (_pwd.find_first_of(letters) != string::npos)
 	{
-		cout << "ERROR: Некорректный ввод. Используйте латинницу. " << endl;
+		cout << "ERROR: Некорректный ввод. Используйте латинницу." << endl;
+		errCount++;
 	}
 	if (_pwd.find_first_of(" ") != string::npos)
 	{
-		cout << "ERROR: Некорректный ввод. Не используйте пробел. " << endl;
+		cout << "ERROR: Некорректный ввод. Не используйте пробел." << endl;
+		errCount++;
 	}
-	if (_pwd.find_first_of(letters) == string::npos && _pwd.find_first_of(" ") == string::npos)
+
+	if (errCount == 0)
 	{
 		return true;
 	}
