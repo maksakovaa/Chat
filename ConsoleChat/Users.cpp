@@ -103,7 +103,9 @@ void UserBase::resize(int newSize)
 
 	if (usercount > 0)
 	{
+		//создаём временный двумерный динамический массив
 		std::string** data = new std::string * [newSize];
+		//копируем данные из существующего во временный двумерный динамический массив нового размера
 		for (int i = 0; i < newSize-1; i++)
 		{
 			data[i] = new std::string[usParams];
@@ -112,8 +114,11 @@ void UserBase::resize(int newSize)
 				data[i][j] = usersArr[i][j];
 			}
 		}
+		//выполняем удаление существующего массива
 		erase();
+		//создаём массив нового размера
 		usersArr = new std::string * [newSize];
+		//и копируем в него данные
 		for (int i = 0; i < newSize-1; i++)
 		{
 			usersArr[i] = new std::string[usParams];
@@ -122,10 +127,12 @@ void UserBase::resize(int newSize)
 				usersArr[i][j] = data[i][j];
 			}
 		}
+		//удаляем временный двумерный динамический массив, сначала вложенные динамические массивы
 		for (int i = 0; i < newSize - 1; i++)
 		{
 			delete[] data[i];
 		}
+		//затем сам массив
 		delete[] data;
 	}
 }
@@ -143,7 +150,9 @@ void UserBase::delUser(int userId)
 		return;
 	}
 
+	//создаём временный двумерный динамический массив. Размер меньше на 1.
 	std::string** data = new std::string * [usercount - 1];
+	//копируем данные во временный массив до индекса удаляемого пользователя
 	for (int before = 0; before < userId; before++)
 	{
 		data[before] = new std::string[usParams];
@@ -152,6 +161,8 @@ void UserBase::delUser(int userId)
 			data[before][j] = usersArr[before][j];
 		}
 	}
+	//Если индекс удаляемого пользователя не крайний то продолжаем копирование данных во временный массив
+	// пропуская данные удаляемого пользователя (after {userId + 1})
 	if (userId < usercount-1)
 	{
 		for (int after{ userId + 1 }; after < usercount; ++after)
@@ -163,8 +174,11 @@ void UserBase::delUser(int userId)
 			}
 		}
 	}
+	//выполняем удаление существующего массива
 	erase();
+	//создаём массив нового размера
 	usersArr = new std::string * [usercount-1];
+	//и копируем в него данные
 	for (int i = 0; i < usercount - 1; i++)
 	{
 		usersArr[i] = new std::string[usParams];
@@ -173,10 +187,12 @@ void UserBase::delUser(int userId)
 			usersArr[i][j] = data[i][j];
 		}
 	}
+	//удаляем временный двумерный динамический массив, сначала вложенные динамические массивы
 	for (int i = 0; i < usercount - 1; i++)
 	{
 		delete[] data[i];
 	}
+	//затем сам массив
 	delete[] data;
 	--usercount;
 }
